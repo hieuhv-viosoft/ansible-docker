@@ -23,3 +23,12 @@ class Images(object):
 		for row in rows:
 			results.append(row)
 		return results
+	
+	@staticmethod
+	def init_server(uuid,name,ipmi_user,ipmi_addr,ipmi_pass,mac_addr,ipv4_addr):
+		server = Server(uuid,name,ipmi_user,ipmi_addr,ipmi_pass,mac_addr,ipv4_addr)
+		return server
+
+	@staticmethod
+	def setup(server):
+		call('mkdir hieu')

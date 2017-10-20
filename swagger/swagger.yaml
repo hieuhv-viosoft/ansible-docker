@@ -35,13 +35,12 @@ paths:
             type: array
             items:
               $ref: '#/definitions/image'
-  /servers/{server_uuid}:
+  /servers:
     put:
       tags: [servers]
       operationId: api.registry.put
       summary: Setup servers
       parameters:
-        - $ref: '#/parameters/server_uuid'
         - name: server
           in: body
           schema:
@@ -74,13 +73,13 @@ parameters:
     required: true
     pattern: "^[a-zA-Z0-9-]+$"
 
-  server_uuid:
-    name: server_uuid
-    description: Server's Unique identifier
-    in: path
-    type: string
-    required: true
-    pattern: "^[a-zA-Z0-9-]+$"
+  # server_uuid:
+  #   name: server_uuid
+  #   description: Server's Unique identifier
+  #   in: path
+  #   type: string
+  #   required: true
+  #   pattern: "^[a-zA-Z0-9-]+$"
 
 
 definitions:
@@ -169,7 +168,7 @@ definitions:
         type: string
         description: Url og image
         example: "http://172.16.166.14:8080/user_image.qcow2"
-        minLength: 100
+        minLength: 10
       created:
         type: string
         format: date-time
