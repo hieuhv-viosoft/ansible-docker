@@ -1,0 +1,187 @@
+swagger: '2.0'
+info:
+  title: Creat account API
+  version: "0.1"
+consumes:
+  - application/json
+produces:
+  - application/json
+schemes:
+  - http
+security:
+  # enable OAuth protection for all REST endpoints
+  # (only active if the TOKENINFO_URL environment variable is set)
+  - oauth2: [uid]
+paths:
+  /images:
+    get:
+      tags: [images]
+      operationId: api.registry.get
+      summary: Get all images
+      parameters:
+        - name: image_id
+          in: query
+          type: string
+          pattern: "^[a-zA-Z0-9]*$"
+        - name: limit
+          in: query
+          type: integer
+          minimum: 0
+          default: 100
+      responses:
+        200:
+          description: Return images
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/image'
+  /servers/{server_uuid}:
+    put:
+      tags: [servers]
+      operationId: api.registry.put
+      summary: Setup servers
+      parameters:
+        - $ref: '#/parameters/server_uuid'
+        - name: server
+          in: body
+          schema:
+            $ref: '#/definitions/Server'
+      responses:
+        200:
+          description: Start setting up ...
+
+
+
+  #   delete:
+  #     tags: [images]
+  #     operationId: api.registry.delete
+  #     summary: Remove a image
+  #     parameters:
+  #       - $ref: '#/parameters/image_id'
+  #     responses:
+  #       204:
+  #         description: image was deleted
+  #       404:
+  #         description: image does not exist
+
+
+parameters:
+  image_id:
+    name: image_id
+    description: image's Unique identifier
+    in: path
+    type: string
+    required: true
+    pattern: "^[a-zA-Z0-9-]+$"
+
+  server_uuid:
+    name: server_uuid
+    description: Server's Unique identifier
+    in: path
+    type: string
+    required: true
+    pattern: "^[a-zA-Z0-9-]+$"
+
+
+definitions:
+  Server:
+    type: object
+    required:
+      - name
+      - id
+      - ipmi_user
+      - ipmi_addr
+      - ipmi_pass
+      - mac_addr
+      - ipv4_addr
+      - image
+    properties:
+      name:
+        type: string
+        description: server's name
+        example: "server1"
+        minLength: 1
+        maxLength: 100
+      id:
+        type: string
+        description: Server's Unique identifier
+        example: "123"
+        readOnly: true
+      ipmi_user:
+        type: string
+        description: ipmi user
+        example: "root"
+        minLength: 1
+        maxLength: 100
+      ipmi_addr:
+        type: string
+        description: ipmi address of server
+        example: "10.76.244.12"
+        minLength: 1
+        maxLength: 100
+      ipmi_pass:
+        type: string
+        description: password to login ipmi drashboard
+        example: "blueteam11"
+        minLength: 1
+        maxLength: 100
+      mac_addr:
+        type: string
+        description: Mac address of nic downloaded images on server
+        example: "00:1e:67:fe:fa:e9"
+        minLength: 1
+        maxLength: 100
+      ipv4_addr:
+        type: string
+        description: ip address of server after startup
+        example: "172.16.166.34"
+        minLength: 1
+        maxLength: 100
+      image:
+        $ref: '#/definitions/image'
+      created:
+        type: string
+        format: date-time
+        description: Creation time
+        example: "2015-07-07T15:49:51.230+02:00"
+        readOnly: true
+
+
+  image:
+    type: object
+    required:
+      - name
+      - image_id
+      - url
+    properties:
+      image_id:
+        type: string
+        description: Unique identifier
+        example: "123"
+        readOnly: true
+      name:
+        type: string
+        description: image's name
+        example: "ubuntu-server-16.04-amd64"
+        minLength: 1
+        maxLength: 100
+      url:
+        type: string
+        description: Url og image
+        example: "http://172.16.166.14:8080/user_image.qcow2"
+        minLength: 100
+      created:
+        type: string
+        format: date-time
+        description: Creation time
+        example: "2015-07-07T15:49:51.230+02:00"
+        readOnly: true
+
+
+securityDefinitions:
+  oauth2:
+    type: oauth2
+    flow: implicit
+    authorizationUrl: https://example.com/oauth2/dialog
+    scopes:
+      uid: Unique identifier of the image accessing the service.
