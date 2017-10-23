@@ -86,13 +86,10 @@ definitions:
   Server:
     type: object
     required:
-      - name
-      - id
       - ipmi_user
       - ipmi_addr
       - ipmi_pass
       - mac_addr
-      - ipv4_addr
       - image
     properties:
       name:
@@ -137,7 +134,11 @@ definitions:
         minLength: 1
         maxLength: 100
       image:
-        $ref: '#/definitions/image'
+        type: string
+        description: ip address of server after startup
+        example: "172.16.166.34"
+        minLength: 1
+        maxLength: 100
       created:
         type: string
         format: date-time

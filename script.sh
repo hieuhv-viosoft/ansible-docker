@@ -49,10 +49,7 @@ pip install -e .
 pip install "ansible>=2.1.0"
 
 sed -i '/enabled_drivers =*/c\enabled_drivers = pxe_ipmitool_ansible' /etc/ironic/ironic.conf
-vim /etc/ironic/ironic.conf
-
-automated_clean = true
-erase_devices_priority = 0
+sed -i 's/automated_clean = false/automated_clean = true/g' /etc/ironic/ironic.conf
 
 service ironic-conductor restart
 
