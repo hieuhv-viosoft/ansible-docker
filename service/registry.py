@@ -33,4 +33,4 @@ class Images(object):
 	@staticmethod
 	def setup(server):
 		cmd = 'sh script.sh ' + ' ' + server.id + ' ' +  server.name + ' ' + server.ipmi_user + ' ' + server.ipmi_addr + ' ' + server.ipmi_pass + ' ' + server.mac_addr + ' ' + server.ipv4_addr
-		os.system(ssh root@172.17.0.1 cmd)
+		os.system('ssh root@172.17.0.1 '+ cmd)
