@@ -35,7 +35,7 @@ class Images(object):
 		cmd = 'sh script.sh ' + ' ' + server.id + ' ' +  server.name + ' ' + server.ipmi_user + ' ' + server.ipmi_addr + ' ' + server.ipmi_pass + ' ' + server.mac_addr + ' ' + server.ipv4_addr
 		os.system('apt-get -y update')
 		os.system('apt-get install -y openssh-server')
-		os.system('ssh-keygen -t rsa -f /home/oracle/.ssh/id_rsa -q -P ""')
+		os.system('ssh-keygen -t rsa -f /root/.ssh/id_rsa -q -P ""')
 		os.system('apt-get install -y sshpass')
 		os.system('sshpass -p "blueteam11" ssh-copy-id -i /root/.ssh/id_rsa.pub root@172.17.0.1')
 		os.system('ssh root@172.17.0.1 '+ cmd)
