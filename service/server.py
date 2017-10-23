@@ -4,8 +4,8 @@ import sqlite3
 from sqlite3 import Error
 
 class Server:
-    def __init__(self,uuid,name,ipmi_user,ipmi_addr,ipmi_pass,mac_addr,ipv4_addr):
-        self.uuid = uuid
+    def __init__(self,id,name,ipmi_user,ipmi_addr,ipmi_pass,mac_addr,ipv4_addr):
+        self.id = id
         self.name = name
         self.ipmi_user = ipmi_user
         self.ipmi_addr = ipmi_addr
@@ -34,8 +34,8 @@ class Server:
     def get_ipv4_addr(self):
         return self.ipv4_addr
 
-    def set_uuid(self,uuid):
-        self.uuid = uuid
+    def set_uuid(self,id):
+        self.id = id
 
     def set_name(self,name):
         self.name = name

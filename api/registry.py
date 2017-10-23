@@ -6,8 +6,8 @@ image=Images()
 def get():
     return image.get_all()
 
-def put(uuid,name,ipmi_user,ipmi_addr,ipmi_pass,mac_addr,ipv4_addr):
-    image.setup_server(init_server(uuid,name,ipmi_user,ipmi_addr,ipmi_pass,mac_addr,ipv4_addr))
+def put(server):
+    image.setup(image.init_server(server['id'],server['name'],server['ipmi_user'],server['ipmi_addr'],server['ipmi_pass'],server['mac_addr'],server['ipv4_addr']))
 # def get_user(user_id):
 #
 #     return account.get_user(user_id)
