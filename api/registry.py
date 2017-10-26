@@ -11,9 +11,9 @@ def put(server):
     logging.info(server)
     msg = {
         'status': 'Success',
-        'user': 'root'
-        'pass': 'blueteam11'
-        'ipv4': ''
+        'user': 'root',
+        'pass': 'blueteam11',
+        'ipv4': '172.16.166.34'
     }
     return msg, 200
     #image.setup(image.init_server(server['id'],server['name'],server['ipmi_user'],server['ipmi_addr'],server['ipmi_pass'],server['mac_addr'],server['ipv4_addr']))

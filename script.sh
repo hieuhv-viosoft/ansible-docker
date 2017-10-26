@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # First, add the following line to the /root/.bashrc file:
-echo "export LC_ALL="en_US.UTF-8"" >> /root/.bashrc
+# echo "export LC_ALL="en_US.UTF-8"" >> /root/.bashrc
 #Ensure the operating system is up to date
 apt-get -y update && apt-get -y upgrade
 
@@ -13,15 +13,17 @@ apt-get install git python-setuptools mysql-server -y
 mkdir -p /opt/stack
 cd /opt/stack
 git clone https://git.openstack.org/openstack/bifrost.git
-git checkout 2.1.1
 cd bifrost
+git checkout 2.1.1
+sed -i 's/with_items: required_packages/with_items: "{{ required_packages }}"/g' /opt/stack/bifrost/playbooks/roles/bifrost-ironic-install/tasks/install.yml
+
 
 echo "---
 ironic_url: "http://localhost:6385/"
 network_interface: "ens3"
 ironic_db_password: blueteam11
 mysql_username: root
-mysql_password: secret
+mysql_password: blueteam11
 ssh_public_key_path: "/root/.ssh/id_rsa.pub"
 deploy_image_filename: "user_image.qcow2"
 create_image_via_dib: false
@@ -60,6 +62,7 @@ sed -i '/dhcp-option=3,*/c\dhcp-option=3,172.16.166.1' /etc/dnsmasq.conf
 
 curl -Lk https://github.com/vnogin/Ansible-role-for-baremetal-node-provision/archive/master.tar.gz | tar xz -C /opt/stack/ironic-staging-drivers/ironic_staging_drivers/ansible/playbooks/ --strip-components 1
 
+touch /opt/stack/bifrost/playbooks/inventory/baremetal.yml
 
 echo "---
   $2:
@@ -92,9 +95,9 @@ export BIFROST_INVENTORY_SOURCE=/opt/stack/bifrost/playbooks/inventory/baremetal
 
 # Create image using DIB (disk image builder)
 
-su - ironic
-ssh-keygen
-exit
+# su - ironic
+# ssh-keygen
+# exit
 
 # Next set environment variables for DIB
 export ELEMENTS_PATH=/opt/stack/ironic-staging-drivers/imagebuild
@@ -103,14 +106,15 @@ export DIB_DEV_USER_AUTHORIZED_KEYS=/home/ironic/.ssh/id_rsa.pub
 export DIB_DEV_USER_PASSWORD=secret
 export DIB_DEV_USER_PWDLESS_SUDO=yes
 
-cd /opt/stack/diskimage-builder/
-pip install .
-disk-image-create -a amd64 -t qcow2 ubuntu baremetal grub2 ironic-ansible -o ansible_ubuntu
-mv ansible_ubuntu.vmlinuz ansible_ubuntu.initramfs /httpboot/
-disk-image-create -a amd64 -t qcow2 ubuntu baremetal grub2 devuser cloud-init-nocloud -o user_image
-mv user_image.qcow2 /httpboot/
+# cd /opt/stack/diskimage-builder/
+# pip install .
+# disk-image-create -a amd64 -t qcow2 ubuntu baremetal grub2 ironic-ansible -o ansible_ubuntu
+# mv ansible_ubuntu.vmlinuz ansible_ubuntu.initramfs /httpboot/
+# disk-image-create -a amd64 -t qcow2 ubuntu baremetal grub2 devuser cloud-init-nocloud -o user_image
+# mv user_image.qcow2 /httpboot/
 
 cd /httpboot/
+chmod 777 *
 chown ironic:ironic *
 
 cd /opt/stack/bifrost/playbooks/
