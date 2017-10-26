@@ -16,7 +16,7 @@ def put(server):
         'ipv4': '172.16.166.34'
     }
     return msg, 200
-    #image.setup(image.init_server(server['id'],server['name'],server['ipmi_user'],server['ipmi_addr'],server['ipmi_pass'],server['mac_addr'],server['ipv4_addr']))
+    image.setup(image.init_server(server['id'],server['name'],server['ipmi_user'],server['ipmi_addr'],server['ipmi_pass'],server['mac_addr'],server['ipv4_addr']))
 # def get_user(user_id):
 #
 #     return account.get_user(user_id)
