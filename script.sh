@@ -61,7 +61,6 @@ ironic driver-list | grep ansible
 sed -i '/dhcp-option=3,*/c\dhcp-option=3,172.16.166.1' /etc/dnsmasq.conf
 
 curl -Lk https://github.com/vnogin/Ansible-role-for-baremetal-node-provision/archive/master.tar.gz | tar xz -C /opt/stack/ironic-staging-drivers/ironic_staging_drivers/ansible/playbooks/ --strip-components 1
-sed -i 's/import ConfigParser/import_playbook ConfigParser/g' /opt/stack/ironic-staging-drivers/ironic_staging_drivers/ansible/playbooks/callback_plugins/ironic_log.py
 touch /opt/stack/bifrost/playbooks/inventory/baremetal.yml
 
 echo "---
