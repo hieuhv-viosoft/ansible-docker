@@ -23,7 +23,7 @@ ironic_url: "http://localhost:6385/"
 network_interface: "ens3"
 ironic_db_password: blueteam11
 mysql_username: root
-mysql_password: blueteam11
+mysql_password: secret
 ssh_public_key_path: "/root/.ssh/id_rsa.pub"
 deploy_image_filename: "user_image.qcow2"
 create_image_via_dib: false
@@ -61,7 +61,7 @@ ironic driver-list | grep ansible
 sed -i '/dhcp-option=3,*/c\dhcp-option=3,172.16.166.1' /etc/dnsmasq.conf
 
 curl -Lk https://github.com/vnogin/Ansible-role-for-baremetal-node-provision/archive/master.tar.gz | tar xz -C /opt/stack/ironic-staging-drivers/ironic_staging_drivers/ansible/playbooks/ --strip-components 1
-
+sed -i 's/import ConfigParser/import_playbook ConfigParser/g' /opt/stack/ironic-staging-drivers/ironic_staging_drivers/ansible/playbooks/callback_plugins/ironic_log.py
 touch /opt/stack/bifrost/playbooks/inventory/baremetal.yml
 
 echo "---
