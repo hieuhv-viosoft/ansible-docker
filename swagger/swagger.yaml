@@ -101,7 +101,7 @@ definitions:
       id:
         type: string
         description: Server's Unique identifier
-        example: "123"
+        example: "00000000-0000-0000-0000-000000000001"
         readOnly: true
       ipmi_user:
         type: string
