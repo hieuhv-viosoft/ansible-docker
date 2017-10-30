@@ -6,4 +6,4 @@ RUN pip3 install -r /requirements.txt
 COPY  . /data
 
 WORKDIR /data
-CMD /data/remote.sh
+CMD bash remote.sh

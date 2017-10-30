@@ -36,9 +36,9 @@ paths:
             items:
               $ref: '#/definitions/image'
   /servers:
-    put:
+    post:
       tags: [servers]
-      operationId: api.registry.put
+      operationId: api.registry.post
       summary: Setup servers
       parameters:
         - name: server
@@ -92,17 +92,17 @@ definitions:
       - mac_addr
       - image
     properties:
-      name:
-        type: string
-        description: server's name
-        example: "server1"
-        minLength: 1
-        maxLength: 100
-      id:
-        type: string
-        description: Server's Unique identifier
-        example: "00000000-0000-0000-0000-000000000001"
-        readOnly: true
+      # name:
+      #   type: string
+      #   description: server's name
+      #   example: "server1"
+      #   minLength: 1
+      #   maxLength: 100
+      # id:
+      #   type: string
+      #   description: Server's Unique identifier
+      #   example: "00000000-0000-0000-0000-000000000001"
+      #   readOnly: true
       ipmi_user:
         type: string
         description: ipmi user
@@ -127,12 +127,12 @@ definitions:
         example: "00:1e:67:fe:fa:e9"
         minLength: 1
         maxLength: 100
-      ipv4_addr:
-        type: string
-        description: ip address of server after startup
-        example: "172.16.166.34"
-        minLength: 1
-        maxLength: 100
+      # ipv4_addr:
+      #   type: string
+      #   description: ip address of server after startup
+      #   example: "172.16.166.34"
+      #   minLength: 1
+      #   maxLength: 100
       image:
         type: string
         description: ip address of server after startup

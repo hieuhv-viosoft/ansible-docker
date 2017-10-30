@@ -31,13 +31,20 @@ class Images(object):
 		return results
 
 	@staticmethod
-	def init_server(id,name,ipmi_user,ipmi_addr,ipmi_pass,mac_addr,ipv4_addr):
+	def init_server(ipmi_user,ipmi_addr,ipmi_pass,mac_addr):
+		# sql = "SELECT ID FROM " + 'SERVERS'
+		# cur.execute(sql)
+		# if cur = "":
+		# 	id=
+		id = "00000000-0000-0000-0000-000000000001"
+		name = "server1"
+		ipv4_addr = "172.16.166.34"
 		server = Server(id,name,ipmi_user,ipmi_addr,ipmi_pass,mac_addr,ipv4_addr)
 		return server
 
 	@staticmethod
 	def setup(server):
-		cmd = 'sh remote.sh ' + ' ' + server.id + ' ' +  server.name + ' ' + server.ipmi_user + ' ' + server.ipmi_addr + ' ' + server.ipmi_pass + ' ' + server.mac_addr + ' ' + server.ipv4_addr
+		cmd = 'ssh root@172.17.0.1 bash deploy_os.sh ' + ' ' + server.id + ' ' +  server.name + ' ' + server.ipmi_user + ' ' + server.ipmi_addr + ' ' + server.ipmi_pass + ' ' + server.mac_addr + ' ' + server.ipv4_addr
 		# os.system('apt-get -y update')
 		# os.system('apt-get install -y openssh-server')
 		# os.system('ssh-keygen -t rsa -f /root/.ssh/id_rsa -q -P ""')

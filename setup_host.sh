@@ -4,6 +4,7 @@
 # echo "export LC_ALL="en_US.UTF-8"" >> /root/.bashrc
 #Ensure the operating system is up to date
 apt-get -y update && apt-get -y upgrade
+ssh-keygen -t rsa -f /root/.ssh/id_rsa -q -P ""
 
 # set the MySQL password to “secret”
 echo mysql-server-5.1 mysql-server/root_password password blueteam11 | debconf-set-selections
@@ -64,27 +65,27 @@ curl -Lk https://github.com/vnogin/Ansible-role-for-baremetal-node-provision/arc
 touch /opt/stack/bifrost/playbooks/inventory/baremetal.yml
 
 echo "---
-  $2:
+  server0:
     ipa_kernel_url: "http://172.16.166.14:8080/ansible_ubuntu.vmlinuz"
     ipa_ramdisk_url: "http://172.16.166.14:8080/ansible_ubuntu.initramfs"
-    uuid: $1
+    uuid: 00000000-0000-0000-0000-000000000001
     driver_info:
       power:
-        ipmi_username: $3
-        ipmi_address: $4
-        ipmi_password: $5
+        ipmi_username: user_ipmi
+        ipmi_address: addr_ipmi
+        ipmi_password: pass_ipmi
         ansible_deploy_playbook: deploy_custom.yaml
     nics:
       -
-        mac: $6
+        mac: mac_nic
     driver: pxe_ipmitool_ansible
-    ipv4_address: $7
+    ipv4_address: ip_addr
     properties:
       cpu_arch: x86_64
       ram: 16000
       disk_size: 60
       cpus: 8
-    name: server1
+    name: server0
     instance_info:
       image_source: "http://172.16.166.14:8080/user_image.qcow2"" > /opt/stack/bifrost/playbooks/inventory/baremetal.yml
 
@@ -116,6 +117,6 @@ cd /httpboot/
 chmod 777 *
 chown ironic:ironic *
 
-cd /opt/stack/bifrost/playbooks/
-ansible-playbook -vvvv -i inventory/bifrost_inventory.py enroll-dynamic.yaml
-ansible-playbook -vvvv -i inventory/bifrost_inventory.py deploy-dynamic.yaml
+# cd /opt/stack/bifrost/playbooks/
+# ansible-playbook -vvvv -i inventory/bifrost_inventory.py enroll-dynamic.yaml
+# ansible-playbook -vvvv -i inventory/bifrost_inventory.py deploy-dynamic.yaml
