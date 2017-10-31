@@ -7,8 +7,8 @@ apt-get -y update && apt-get -y upgrade
 ssh-keygen -t rsa -f /root/.ssh/id_rsa -q -P ""
 
 # set the MySQL password to “secret”
-echo mysql-server-5.1 mysql-server/root_password password blueteam11 | debconf-set-selections
-echo mysql-server-5.1 mysql-server/root_password_again password blueteam11 | debconf-set-selections
+echo mysql-server-5.1 mysql-server/root_password password secret | debconf-set-selections
+echo mysql-server-5.1 mysql-server/root_password_again password secret | debconf-set-selections
 apt-get install git python-setuptools mysql-server -y
 
 mkdir -p /opt/stack
