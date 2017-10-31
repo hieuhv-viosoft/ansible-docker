@@ -50,6 +50,6 @@ class Images(object):
 		# os.system('ssh-keygen -t rsa -f /root/.ssh/id_rsa -q -P ""')
 		# os.system('apt-get install -y sshpass')
 		# os.system('sshpass -p "blueteam11" ssh-copy-id -o StrictHostKeyChecking=no root@172.17.0.1')
-		# os.system('scp script.sh root@172.17.0.1:/root')
+		# os.system('scp setup_host.sh root@172.17.0.1:/root')
 		# os.system('ssh root@172.17.0.1 '+ cmd)
 		os.system(cmd)
