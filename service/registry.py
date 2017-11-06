@@ -44,6 +44,7 @@ class Images(object):
 
 	@staticmethod
 	def setup(server):
+		os.system('scp deploy_os.sh root@172.17.0.1:/root')
 		cmd = 'ssh root@172.17.0.1 bash deploy_os.sh ' + ' ' + server.id + ' ' +  server.name + ' ' + server.ipmi_user + ' ' + server.ipmi_addr + ' ' + server.ipmi_pass + ' ' + server.mac_addr + ' ' + server.ipv4_addr
 		# os.system('apt-get -y update')
 		# os.system('apt-get install -y openssh-server')

@@ -95,7 +95,9 @@ export BIFROST_INVENTORY_SOURCE=/opt/stack/bifrost/playbooks/inventory/baremetal
 
 # Create image using DIB (disk image builder)
 
-# su - ironic
+su - ironic
+ssh-keygen -t rsa -f /home/ironic/.ssh/id_rsa -q -P ""
+exit
 # ssh-keygen
 # exit
 
@@ -107,16 +109,49 @@ export DIB_DEV_USER_PASSWORD=secret
 export DIB_DEV_USER_PWDLESS_SUDO=yes
 
 # cd /opt/stack/diskimage-builder/
+# git ckecout 1.23.0
 # pip install .
+# sed -i "s/ExecStartPre=/usr/sbin/modprobe vfat/ExecStartPre=/sbin/modprobe vfat/g" /opt/stack/diskimage-builder/doc/source/elements/ironic-agent/install.d/ironic-agent-source-install/ironic-python-agent.service
 # disk-image-create -a amd64 -t qcow2 ubuntu baremetal grub2 ironic-ansible -o ansible_ubuntu
-# mv ansible_ubuntu.vmlinuz ansible_ubuntu.initramfs /httpboot/
 # disk-image-create -a amd64 -t qcow2 ubuntu baremetal grub2 devuser cloud-init-nocloud -o user_image
 # mv user_image.qcow2 /httpboot/
+# mv ansible_ubuntu.vmlinuz ansible_ubuntu.initramfs /httpboot/
 
 cd /httpboot/
 chmod 777 *
 chown ironic:ironic *
 
+touch /opt/stack/ironic-staging-drivers/ironic_staging_drivers/ansible/playbooks/roles/deploy_custom/tasks/network.yaml
+cat > /opt/stack/ironic-staging-drivers/ironic_staging_drivers/ansible/playbooks/roles/deploy_custom/tasks/network.yaml << EOL
+- name: Get ip address
+  become: yes
+  command: ifconfig eno1 172.16.166.34 netmask 255.255.255.0
+
+- name: Add default gateway
+  become: yes
+  command: route add default gw 172.16.166.1
+
+- name: Change DNS server
+  become: yes
+  command: sed -i "s/nameserver 127.0.0.1/nameserver 8.8.8.8/g" /etc/resolv.conf
+EOL
+
+cat > /opt/stack/ironic-staging-drivers/ironic_staging_drivers/ansible/playbooks/roles/deploy_custom/tasks/main.yaml << EOL
+- include: network.yaml
+- include: bootstrap.yaml
+- include: raid_and_lvm.yaml
+
+#- include: root-device.yaml
+#- include: parted.yaml
+#  tags:
+#  - parted
+- include: download.yaml
+  when: "{{ image.disk_format != 'raw' }}"
+- include: write.yaml
+- include: grub.yaml
+#  tags:
+#  - parted
+EOL
 # cd /opt/stack/bifrost/playbooks/
-# ansible-playbook -vvvv -i inventory/bifrost_inventory.py enroll-dynamic.yaml
+  # ansible-playbook -vvvv -i inventory/bifrost_inventory.py enroll-dynamic.yaml
 # ansible-playbook -vvvv -i inventory/bifrost_inventory.py deploy-dynamic.yaml
